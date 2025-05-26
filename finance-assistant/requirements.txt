@@ -1,0 +1,17 @@
+yfinance
+requests
+aiohttp
+beautifulsoup4
+langchain-community
+langchain-huggingface
+langchain-groq
+langgraph
+faiss-cpu
+whisper
+gtts
+streamlit
+fastapi
+uvicorn
+mcp
+anthropic-mcp-sdk
+sentence-transformers
