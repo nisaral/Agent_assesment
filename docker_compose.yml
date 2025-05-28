@@ -1,0 +1,79 @@
+version: '3.8'
+services:
+  api_agent:
+    build: .
+    command: uvicorn agents.api_agent:app --host 0.0.0.0 --port 8001
+    ports:
+      - "8001:8001"
+    env_file: .env
+    environment:
+      - PYTHONPATH=/app
+      - TF_ENABLE_ONEDNN_OPTS=0
+    volumes:
+      - .:/app
+  scraping_agent:
+    build: .
+    command: uvicorn agents.scraping_agent:app --host 0.0.0.0 --port 6002
+    ports:
+      - "6002:6002"
+    env_file: .env
+    environment:
+      - PYTHONPATH=/app
+      - TF_ENABLE_ONEDNN_OPTS=0
+    volumes:
+      - .:/app
+  retriever_agent:
+    build: .
+    command: uvicorn agents.retriever_agent:app --host 0.0.0.0 --port 6003
+    ports:
+      - "6003:6003"
+    env_file: .env
+    environment:
+      - PYTHONPATH=/app
+      - TF_ENABLE_ONEDNN_OPTS=0
+    volumes:
+      - .:/app
+  analysis_agent:
+    build: .
+    command: uvicorn agents.analysis_agent:app --host 0.0.0.0 --port 6004
+    ports:
+      - "6004:6004"
+    env_file: .env
+    environment:
+      - PYTHONPATH=/app
+      - TF_ENABLE_ONEDNN_OPTS=0
+    volumes:
+      - .:/app
+  language_agent:
+    build: .
+    command: uvicorn agents.language_agent:app --host 0.0.0.0 --port 6005
+    ports:
+      - "6005:6005"
+    env_file: .env
+    environment:
+      - PYTHONPATH=/app
+      - TF_ENABLE_ONEDNN_OPTS=0
+    volumes:
+      - .:/app
+  voice_agent:
+    build: .
+    command: uvicorn agents.voice_agent:app --host 0.0.0.0 --port 6006
+    ports:
+      - "6006:6006"
+    env_file: .env
+    environment:
+      - PYTHONPATH=/app
+      - TF_ENABLE_ONEDNN_OPTS=0
+    volumes:
+      - .:/app
+  orchestrator:
+    build: .
+    command: uvicorn orchestrator.workflow:app --host 0.0.0.0 --port 6007
+    ports:
+      - "6007:6007"
+    env_file: .env
+    environment:
+      - PYTHONPATH=/app
+      - TF_ENABLE_ONEDNN_OPTS=0
+    volumes:
+      - .:/app

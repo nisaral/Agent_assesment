@@ -1,0 +1,8 @@
+Service Ports:
+agents.api_agent: http://localhost:8001
+agents.scraping_agent: http://localhost:6002
+agents.retriever_agent: http://localhost:6003
+agents.analysis_agent: http://localhost:6004
+agents.language_agent: http://localhost:6005
+agents.voice_agent: http://localhost:6006
+orchestrator.workflow: http://localhost:6007

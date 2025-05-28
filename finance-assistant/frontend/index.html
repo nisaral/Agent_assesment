@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finance Assistant</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.27.1/plotly.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Global Market Assistant</h1>
+        <div class="portfolio-section">
+            <h2>Enter Your Portfolio</h2>
+            <textarea id="portfolio-input" placeholder="e.g., AAPL:100, MSFT:50"></textarea>
+            <button onclick="savePortfolio()">Save Portfolio</button>
+        </div>
+        <div class="query-section">
+            <h2>Enter Your Query</h2>
+            <input type="text" id="query-input-text" placeholder="What's our risk exposure in global technology stocks?">
+            <button onclick="submitQuery()">Submit Query</button>
+            <button onclick="startRecording()">Record Voice</button>
+            <button onclick="stopRecording()">Stop</button>
+            <p id="record-status">Ready</p>
+        </div>
+        <div class="live-section">
+            <h3>Live Stock Tracking</h3>
+            <table id="live-tracking">
+                <thead>
+                    <tr>
+                        <th>Stock</th>
+                        <th>Price ($)</th>
+                        <th>Volume</th>
+                        <th>Last Updated</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <div class="response-section">
+            <h2>Response</h2>
+            <div class="output-container">
+                <div class="written-output">
+                    <h3>Written Analysis</h3>
+                    <div id="written-response" class="response-text"></div>
+                </div>
+                <div class="audio-output">
+                    <h3>Audio Response</h3>
+                    <audio id="audio-output" controls></audio>
+                    <div class="voice-history">
+                        <div id="voice-history" class="voicehistory">
+                            <h3>Voice Input History</h3>
+                            <ul id="voice-history-list"></ul>
+                        </div>
+                    </div>
+                </div>
+            <div class="charts-container">
+                <div id="stock-chart"></div>
+                <div id="sector-chart"></div>
+                <div id="news-chart"></div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

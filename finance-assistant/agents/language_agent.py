@@ -335,3 +335,7 @@ async def sample_us_financials():
         commodity_prices={"10Y Treasury": 4.25}
     )
     return await generate_narrative(sample_request)
+
+@app.post("/run")
+async def run(request: LanguageRequest):
+    return await generate_narrative(request)

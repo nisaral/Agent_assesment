@@ -1,70 +1,91 @@
 import sys
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from fastapi import FastAPI
 from pydantic import BaseModel
 from dotenv import load_dotenv
 import aiohttp
-import asyncio
+import logging
 from cachetools import TTLCache
-try:
-    from clients.mcp3_client import Mcp3ClientSession
-except ImportError:
-    from data_ingestion.mcp_scraper import fetch_news
-    from transformers import pipeline
+from transformers import pipeline
+from .base_agent import create_base_app
 
 load_dotenv()
-app = FastAPI()
-cache = TTLCache(maxsize=100, ttl=3600)  # Cache for 1 hour
-NEWSAPI_KEY = os.getenv("NEWSAPI_KEY")  # Add to .env
+app = create_base_app("Scraping Agent")
 
-class SymbolRequest(BaseModel):
-    symbol: str
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+cache = TTLCache(maxsize=100, ttl=3600)
+
+NEWSAPI_KEY = os.getenv("NEWSAPI_KEY")
+if not NEWSAPI_KEY:
+    logger.warning("NEWSAPI_KEY not found in environment variables")
+
+try:
+    sentiment_analyzer = pipeline("sentiment-analysis")
+    logger.info("Successfully initialized sentiment analyzer")
+except Exception as e:
+    logger.error(f"Failed to initialize sentiment analyzer: {e}")
+    sentiment_analyzer = None
+
+class CompanyRequest(BaseModel):
+    company: str
 
 async def fetch_newsapi(symbol: str):
-    url = f"https://newsapi.org/v2/everything?q={symbol}&apiKey={NEWSAPI_KEY}&pageSize=5"
+    if not NEWSAPI_KEY:
+        logger.error("NewsAPI key not configured")
+        return []
+        
+    url = f"https://newsapi.org/v2/everything"
+    params = {
+        "q": symbol,
+        "apiKey": NEWSAPI_KEY,
+        "pageSize": 5,
+        "language": "en",
+        "sortBy": "relevancy"
+    }
+    
     try:
         async with aiohttp.ClientSession() as session:
-            async with session.get(url) as resp:
+            async with session.get(url, params=params) as resp:
+                if resp.status != 200:
+                    logger.error(f"NewsAPI error: {resp.status}")
+                    return []
                 data = await resp.json()
+                if data.get("status") != "ok":
+                    logger.error(f"NewsAPI error: {data.get('message', 'Unknown error')}")
+                    return []
                 return [article["description"] for article in data.get("articles", []) if article.get("description")]
     except Exception as e:
+        logger.error(f"Error fetching news from NewsAPI: {e}")
         return []
 
-@app.post("/news")
-async def get_news(request: SymbolRequest):
-    cache_key = f"news_{request.symbol}"
-    if cache_key in cache:
-        return {"news": cache[cache_key]}
-
-    articles = []
+@app.post("/run")
+async def run(request: CompanyRequest):
     try:
-        async with Mcp3ClientSession() as session:
-            news_data = await session.fetch_news(
-                symbol=request.symbol,
-                sources=["yahoo_finance", "bloomberg", "reuters"],
-                max_items=5
-            )
-            articles = [
-                {
-                    "text": item["content"],
-                    "sentiment": item.get("sentiment", "neutral")
-                }
-                for item in news_data
-            ]
-    except Exception:
-        sentiment_analyzer = pipeline("sentiment-analysis")
-        news = await fetch_news(request.symbol)
-        newsapi_articles = await fetch_newsapi(request.symbol)
-        news = (news.split("\n") if news else []) + newsapi_articles
-        articles = [
-            {
-                "text": text,
-                "sentiment": sentiment_analyzer(text)[0]["label"].lower()
-            }
-            for text in news if text
-        ]
+        cache_key = f"news_{request.company}"
+        if cache_key in cache:
+            logger.info(f"Returning cached news for {request.company}")
+            return {"news": cache[cache_key]}
 
-    formatted_news = [f"{article['text']} (Sentiment: {article['sentiment']})" for article in articles]
-    cache[cache_key] = formatted_news
-    return {"news": formatted_news}
+        news_articles = await fetch_newsapi(request.company)
+        if not news_articles:
+            news_articles = [f"No news available for {request.company}"]
+            logger.info("Using fallback empty news")
+
+        articles_with_sentiment = []
+        for text in news_articles:
+            sentiment = "neutral"
+            try:
+                if sentiment_analyzer:
+                    result = sentiment_analyzer(text)
+                    sentiment = result[0]["label"].lower()
+            except Exception as e:
+                logger.warning(f"Sentiment analysis failed: {e}")
+            articles_with_sentiment.append(f"{text} (Sentiment: {sentiment})")
+
+        cache[cache_key] = articles_with_sentiment
+        return {"news": articles_with_sentiment}
+    except Exception as e:
+        logger.error(f"Error: {e}")
+        return {"news": [f"Error fetching news for {request.company}"]}
