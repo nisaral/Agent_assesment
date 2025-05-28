@@ -1,6 +1,6 @@
 # Finance Assistant
 
-A scalable finance assistant for portfolio risk analysis, supporting voice/text queries and visualizations. Deployed on Vercel and Heroku.
+A scalable finance assistant for portfolio risk analysis, supporting voice/text queries and visualizations
 
 ## Architecture
 
