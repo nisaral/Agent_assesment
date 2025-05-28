@@ -4,7 +4,7 @@ A scalable finance assistant for portfolio risk analysis, supporting voice/text 
 
 ## Architecture
 
-Architecture Diagram-coming soon
+Architecture Diagram-coming soonn
 
 - **Agents**: FastAPI microservices (`api_agent`, `scraping_agent`, `retriever_agent`, `analysis_agent`, `language_agent`, `voice_agent`, `orchestrator`).
 - **MCP**: `scraping_agent` uses MCP for news scraping (NewsAPI, stdio via `uvx`).
