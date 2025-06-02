@@ -57,7 +57,8 @@ Error Handling: Captures errors for debugging (e.g., API error: Invalid ticker s
 
 
 🏗️ Architecture
-![Screenshot 2025-05-29 111031](https://github.com/user-attachments/assets/9a205e13-d03e-43bf-b52e-bfa6647e850f)
+![image](https://github.com/user-attachments/assets/b73ac52d-b13e-4d8e-921c-5153e347a912)
+
 
 
 
