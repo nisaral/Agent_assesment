@@ -197,4 +197,4 @@ June 02, 2025: Nisar deployed the app on Render, with Grok 3’s assistance in d
 
 
 📬 Contact
-For questions about AI tool usage, reach out to Nisar at your.email@example.com.
+For questions about AI tool usage, reach out to Nisar at nisarkeyush3@gmail.com
