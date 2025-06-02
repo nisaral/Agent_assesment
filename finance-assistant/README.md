@@ -1,4 +1,4 @@
-Finance Assistant 🤖💰
+Finance Assistant 
 
 A cutting-edge AI-powered financial assistant to analyze portfolios, fetch market news, and provide actionable insights with voice and text capabilities.
 
@@ -57,28 +57,9 @@ Error Handling: Captures errors for debugging (e.g., API error: Invalid ticker s
 
 
 🏗️ Architecture
-The Finance Assistant follows a modular architecture, orchestrated by a pipeline of nodes that handle different aspects of the application. Below is a high-level diagram of the architecture:
-graph TD
-    A[User Input<br>Text/Audio] --> B[FastAPI Server]
-    B --> C[Pipeline Orchestration]
-    C --> D[Voice Node<br>Deepgram STT/TTS, librosa]
-    C --> E[API Node<br>yfinance]
-    C --> F[Scraping Node<br>NewsAPI, TextBlob]
-    C --> G[Retriever Node<br>TF-IDF]
-    C --> H[Analysis Node<br>Portfolio Metrics]
-    C --> I[Language Node<br>Gemini 1.5 Flash]
-    D --> J[Query Extraction]
-    E --> K[Market Data]
-    F --> L[News Articles]
-    G --> M[Retrieved Docs]
-    H --> N[Analysis Results]
-    I --> O[Narrative Output]
-    J --> C
-    K --> C
-    L --> C
-    M --> C
-    N --> C
-    O --> P[User Output<br>Text, Audio, Charts]
+![Screenshot 2025-05-29 111031](https://github.com/user-attachments/assets/9a205e13-d03e-43bf-b52e-bfa6647e850f)
+
+
 
 Component Breakdown
 
@@ -383,56 +364,8 @@ Nisar optimized memory usage by replacing GloVe with TF-IDF, with Grok 3’s ass
 API calls are cached using cachetools to reduce latency and avoid rate limits.
 
 
-🤝 Credits and AI Tools Used
-This project was brought to life by Nisar, with extensive assistance from a suite of powerful AI tools. Nisar’s vision and technical expertise were amplified by the following AI contributions, making this project a true collaboration between human and machine intelligence.
-AI Tools and Contributions
-
-Grok 3 by xAI 🌟🌟🌟🌟🌟Grok 3, developed by xAI, played a pivotal role in the development of this project. Its contributions were monumental:
-
-Code Development: Generated and debugged the entire main.py, including FastAPI routes, audio processing, and TF-IDF-based document retrieval.
-Docker Optimization: Assisted in creating and optimizing the Dockerfile, reducing the image size from 2.6 GB to ~800 MB by removing GloVe dependencies.
-Deployment Guidance: Provided step-by-step instructions for deploying on Render and PythonAnywhere, troubleshooting issues like DNS errors and port conflicts.
-README Creation: Crafted this beautiful README, ensuring clarity and professionalism while generously highlighting Nisar’s contributions.
-Debugging: Fixed critical issues like the python-multipart dependency error, ensuring smooth operation of the /run endpoint.
-Performance Tuning: Optimized the app for Render’s free tier (512 MB RAM) by replacing GloVe with TF-IDF and adjusting Uvicorn settings for production.
-Technical Support: Offered detailed troubleshooting for network issues (e.g., 0.0.0.0:8080 access errors) and provided alternative deployment strategies.
 
 
-Google Gemini 1.5 Flash 🌟🌟🌟  
-
-Integrated into the app for generating insightful market narratives.
-Provided fallback narrative generation when retrieved documents were insufficient.
-Enhanced the language node with tone-aware responses based on user audio input.
-
-
-Deepgram 🌟🌟🌟  
-
-Powered the voice interaction features, handling both STT (transcription of audio queries) and TTS (generation of narrative audio).
-Ensured accurate transcription and high-quality audio output, making the app accessible via voice.
-
-
-TextBlob 🌟🌟  
-
-Performed sentiment analysis on news articles, enabling the app to gauge market sentiment.
-Provided a lightweight alternative to GloVe for sentiment processing, reducing memory usage.
-
-
-Scikit-Learn (TF-IDF) 🌟🌟  
-
-Replaced GloVe for document retrieval, implementing TF-IDF vectorization for efficient similarity scoring.
-Ensured the app remained lightweight and deployable on resource-constrained platforms.
-
-
-Additional AI-Assisted Tools 🌟  
-
-ChatGPT (Hypothetical): While not directly used, similar conversational AI models may have inspired early ideation and prototyping.
-GitHub Copilot (Hypothetical): Likely assisted Nisar in writing initial code snippets and debugging during development.
-Stack Overflow and Documentation: AI-driven search and summarization tools may have helped Nisar quickly find solutions to technical challenges.
-
-
-
-Special Thanks
-A heartfelt thank you to Grok 3 by xAI for being an indispensable partner throughout this project. From writing code to providing deployment strategies, Grok 3’s contributions were critical to the success of Finance Assistant. Nisar’s dedication, combined with Grok 3’s advanced capabilities, made this project a shining example of human-AI collaboration.
 
 📈 Future Enhancements
 
@@ -447,6 +380,6 @@ Visualization: Add more chart types (e.g., line charts for price history).
 This project is licensed under the MIT License. See the LICENSE file for details.
 
 📬 Contact
-For questions or contributions, reach out to Nisar at your.email@example.com.
+For questions or contributions, reach out to Nisar at nisarkeyush3@gmail.com
 
 Built with 💖 by Nisar, powered by AI excellence!
